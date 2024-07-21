@@ -31,11 +31,11 @@ Learning rotation-invariant distinctive features is a fundamental requirement fo
     <img src="assets/framework.png" alt="framework" width="600" >
 </div>
 
-
 <div align="center">
-    <img src="assets/3DMatch.png" alt="teaser1" width="400" style="margin-right: 10px;">
-    <img src="assets/3DLoMatch.png" alt="teaser2" width="400">
+    <img src="assets/image.png" alt="framework" width="600" >
 </div>
+
+
 
 
 ## News
