@@ -28,11 +28,12 @@ Learning rotation-invariant distinctive features is a fundamental requirement fo
 
 
 <div align="center">
-    <img src="assets/framework.png" alt="framework" width="600" >
+    <img src="assets/framework.png" alt="framework" width="700" >
 </div>
 
+The experimental results of PARE-Net
 <div align="center">
-    <img src="assets/image.png" alt="framework" width="600" >
+    <img src="assets/image.png" alt="framework" width="800" >
 </div>
 
 
