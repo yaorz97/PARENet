@@ -144,7 +144,7 @@ To test the model on 3DLoMatch, just change the argument `--benchmark 3DLoMatch`
 
 To test a pre-trained models on KITTI, use the similar commands:
 ```bash
-# 3DMatch
+# KITTI
 python test.py --snapshot ../../pretrain/kitti.pth.tar
 python eval.py
 ```
