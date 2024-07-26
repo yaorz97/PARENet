@@ -60,8 +60,9 @@ class PARE_Conv_Block(nn.Module):
         """
         q_pts N1 * 3
         s_pts N2 * 3
-        idx   N1 * k
+        q_feats N1 * D * 3
         s_feats N2 * D * 3
+        neighbor_indices   N1 * k
         """
         N, K = neighbor_indices.shape
 
@@ -107,16 +108,17 @@ class PARE_Conv_Resblock(nn.Module):
         self.relu = VNLeakyReLU(out_dim//2, share_nonlinearity)
         self.shortcut_proj = VNLinear(in_dim, out_dim) if shortcut_linear else nn.Identity()
         self.unary = VNLinearLeakyReLU(out_dim//2, out_dim)
-    def forward(self, q_pts, s_pts, s_feats, idx):
+    def forward(self, q_pts, s_pts, s_feats, neighbor_indices):
         """
         q_pts N1 * 3
         s_pts N2 * 3
-        idx   N1 * k
-        feats N2 * D * 3
+        q_feats N1 * D * 3
+        s_feats N2 * D * 3
+        neighbor_indices   N1 * k
         """
 
-        N, K = idx.shape
-        pts = (s_pts[idx] - q_pts[:, None]).unsqueeze(1).permute(0, 1, 3, 2)    # N1 *1 * 3 * k
+        N, K = neighbor_indices.shape
+        pts = (s_pts[neighbor_indices] - q_pts[:, None]).unsqueeze(1).permute(0, 1, 3, 2)    # N1 *1 * 3 * k
         # compute relative coordinates
         center = pts.mean(-1, keepdim=True).repeat(1, 1, 1, K)
         cross = torch.cross(pts, center, dim=2)
@@ -124,7 +126,7 @@ class PARE_Conv_Resblock(nn.Module):
         # predict correlation scores
         scores = self.score_net(local_feats)
         # gather neighbors features
-        neighbor_feats = s_feats[idx, :].permute(0, 2, 3, 1)                            # N1  D * 3 k
+        neighbor_feats = s_feats[neighbor_indices, :].permute(0, 2, 3, 1)                            # N1  D * 3 k
         # shortcut
         identify = neighbor_feats[..., 0]
         identify = self.shortcut_proj(identify)
@@ -203,9 +205,9 @@ class PAREConvFPN(nn.Module):
         feats_s4 = self.encoder4_3(points_list[3], points_list[3], feats_s4, neighbors_list[3])
 
         coarse_feats = self.coarse_RI_head(feats_s4)
-        RI_feats_c, _ = self.coarse_std_feature(coarse_feats)
+        ri_feats_c, _ = self.coarse_std_feature(coarse_feats)
 
-        RI_feats_c = RI_feats_c.reshape(RI_feats_c.shape[0], -1)
+        ri_feats_c = ri_feats_c.reshape(ri_feats_c.shape[0], -1)
 
         up1 = upsampling_list[1]
         latent_s3 = index_select(feats_s4, up1[:, 0], dim=0)
@@ -229,5 +231,5 @@ class PAREConvFPN(nn.Module):
             re_feats_f = feats_s2
         else:
             re_feats_f = re_feats
-        return re_feats_f, ri_feats_f, feats_s4, RI_feats_c, m_scores
+        return re_feats_f, ri_feats_f, feats_s4, ri_feats_c, m_scores
 
