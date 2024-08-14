@@ -187,7 +187,7 @@ class EpochBasedTrainer(BaseTrainer):
         if self.args.resume:
             self.load_snapshot(osp.join(self.snapshot_dir, 'snapshot.pth.tar'))
         elif self.args.snapshot is not None:
-            self.load_snapshot(self.args.snapshot, self.args.cp_snapshot)
+            self.load_snapshot(self.args.snapshot)
         self.set_train_mode()
         # self.inference_epoch()
         while self.epoch < self.max_epoch:
