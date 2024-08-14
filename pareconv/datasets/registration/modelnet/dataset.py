@@ -6,11 +6,11 @@ import torch.utils.data
 import open3d as o3d
 from IPython import embed
 
-from geotransformer.utils.common import load_pickle
-from geotransformer.utils.pointcloud import random_sample_transform, apply_transform, inverse_transform, regularize_normals
-from geotransformer.utils.registration import compute_overlap
-from geotransformer.utils.open3d import estimate_normals, voxel_downsample
-from geotransformer.transforms.functional import (
+from pareconv.utils.common import load_pickle
+from pareconv.utils.pointcloud import random_sample_transform, apply_transform, inverse_transform, regularize_normals
+from pareconv.utils.registration import compute_overlap
+from pareconv.utils.open3d import estimate_normals, voxel_downsample
+from pareconv.transforms.functional import (
     normalize_points,
     random_jitter_points,
     random_shuffle_points,
