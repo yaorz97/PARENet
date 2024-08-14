@@ -1,1 +1,1 @@
-from geotransformer.datasets.registration.modelnet.dataset import ModelNetPairDataset
+from pareconv.datasets.registration.modelnet.dataset import ModelNetPairDataset
