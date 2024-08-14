@@ -150,7 +150,7 @@ class BaseTrainer(abc.ABC):
         torch.save(state_dict, snapshot_filename)
         self.logger.info('Snapshot saved to "{}"'.format(snapshot_filename))
 
-    def load_snapshot(self, snapshot, cp_snapshot=None, fix_prefix=True):
+    def load_snapshot(self, snapshot, fix_prefix=True):
         self.logger.info('Loading from "{}".'.format(snapshot))
         state_dict = torch.load(snapshot, map_location=torch.device('cpu'))
 
